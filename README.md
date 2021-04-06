@@ -12,31 +12,52 @@ A PowerDNS web interface with advanced features.
 - User access management based on domain
 - User activity logging
 - Support Local DB / SAML / LDAP / Active Directory user authentication
-- Support Google / Github / OpenID OAuth
+- Support Google / Github / Azure / OpenID OAuth
 - Support Two-factor authentication (TOTP)
 - Dashboard and pdns service statistics
 - DynDNS 2 protocol support
 - Edit IPv6 PTRs using IPv6 addresses directly (no more editing of literal addresses!)
+- Limited API for manipulating zones and records
+- Full IDN/Punycode support
 
-### Running PowerDNS-Admin
-There are several ways to run PowerDNS-Admin. Following is a simple way to start PowerDNS-Admin with docker in development environment which has PowerDNS-Admin, PowerDNS server and MySQL Back-End Database.
+## Running PowerDNS-Admin
+There are several ways to run PowerDNS-Admin. The easiest way is to use Docker.
+If you are looking to install and run PowerDNS-Admin directly onto your system check out the [Wiki](https://github.com/ngoduykhanh/PowerDNS-Admin/wiki#installation-guides) for ways to do that.
 
-Step 1: Changing configuration
+### Docker
+This are two options to run PowerDNS-Admin using Docker.
+To get started as quickly as possible try option 1. If you want to make modifications to the configuration option 2 may be cleaner.
 
-The configuration file for developement environment is located at `configs/development.py`, you can override some configs by editing `.env` file.
+#### Option 1: From Docker Hub
+The easiest is to just run the latest Docker image from Docker Hub:
+```
+$ docker run -d \
+    -v pda-data:/data \
+    -p 9191:80 \
+    ngoduykhanh/powerdns-admin:latest
+```
+This creates a volume called `pda-data` to persist the SQLite database with the configuration.
 
-Step 2: Build docker images
+#### Option 2: Using docker-compose
+1. Update the configuration
+   Edit the `docker-compose.yml` file to update the database connection string in `SQLALCHEMY_DATABASE_URI`.
+   Other environment variables are mentioned in the [legal_envvars](https://github.com/ngoduykhanh/PowerDNS-Admin/blob/master/configs/docker_config.py#L5-L46).
+   To use the Docker secrets feature it is possible to append `_FILE` to the environment variables and point to a file with the values stored in it.
 
-```$ docker-compose build```
+2. Start docker container
+   ```
+   $ docker-compose up
+   ```
 
-Step 3: Start docker containers
+You can then access PowerDNS-Admin by pointing your browser to http://localhost:9191.
 
-```$ docker-compose up```
-
-You can now access PowerDNS-Admin at url http://localhost:9191
-
-**NOTE:** For other methods to run PowerDNS-Admin, please take look at WIKI pages.
-
-### Screenshots
+## Screenshots
 ![dashboard](https://user-images.githubusercontent.com/6447444/44068603-0d2d81f6-9fa5-11e8-83af-14e2ad79e370.png)
 
+## LICENSE
+MIT. See [LICENSE](https://github.com/ngoduykhanh/PowerDNS-Admin/blob/master/LICENSE)
+
+## Support
+If you like the project and want to support it, you can *buy me a coffee* ☕
+
+<a href="https://www.buymeacoffee.com/khanhngo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
